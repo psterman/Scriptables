@@ -12,7 +12,7 @@ var num = 6; //自定义显示数量
 var rancolor = true; //true为开启随机颜色
 // 填写RSS订阅链接,默认为仓库的最近Commit
 // Fill in the RSS subscription link, the default is the latest Commit of the Repo
-var rsslink = "https://github.com/GideonSenku/Scriptable/commits/master.atom";
+var rsslink = "https://rsshub.app/zaobao/realtime/china";
 try {
   const con = importModule("Config");
   num = con.rssnum();
