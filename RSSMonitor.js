@@ -124,7 +124,7 @@ const scripts = [
   {
     moduleName: "RSSMonitor",
     url:
-      "https://raw.githubusercontent.com/evilbutcher/Scriptables/master/RSSMonitor.js",
+      "https://github.com/psterman/Scriptables/blob/master/RSSMonitor.js",
   },
 ];
 if (goupdate == true) update();
