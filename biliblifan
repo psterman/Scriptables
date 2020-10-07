@@ -1,0 +1,91 @@
+// Variables used by Scriptable.
+// These must be at the very top of the file. Do not edit.
+// icon-color: pink; icon-glyph: tv;
+
+const MID = '280793434'//UP主MID，即个人空间网址后面那段数字 https://space.bilibili.com/280793434
+const UPNAME = '手工耿'//UP主昵称
+
+let apiUrl = "http://api.bilibili.com/x/relation/stat?vmid="+MID
+let data = await loadData()
+let widget = await createWidget(data)
+
+if (config.runsInApp) {
+	widget.presentSmall();
+}
+Script.setWidget(widget)
+Script.complete()
+
+async function createWidget(data) {
+	let widget = new ListWidget()
+	let startColor = new Color("#dc567c")
+	let endColor = new Color("#fb7299")
+	let gradient = new LinearGradient()
+	gradient.colors = [startColor, endColor]
+	gradient.locations = [0.0, 1]
+	widget.backgroundGradient = gradient
+	widget.addSpacer(8)
+  
+	let bLogo = await loadImage("https://forrun.oss-cn-hangzhou.aliyuncs.com/bilibili.png")
+	let image = widget.addImage(bLogo)
+	image.imageSize = new Size(24,24)
+ 	image.centerAlignImage()
+	
+	widget.addSpacer(8)
+	
+	let flTxt = widget.addText(toThousands(data.data['follower']))
+	flTxt.textColor = Color.white()
+	flTxt.font = Font.boldSystemFont(20)
+	flTxt.textOpacity = 0.95
+	flTxt.centerAlignText()
+	
+	widget.addSpacer(8)
+	
+	let unTxt = widget.addText(UPNAME)
+	unTxt.textColor = Color.white()
+	unTxt.font = Font.systemFont(16)
+	unTxt.textOpacity = 0.95
+	unTxt.centerAlignText()
+	
+	widget.addSpacer(5)
+	
+	let miTxt = widget.addText("MID:"+MID)
+	miTxt.textColor = Color.white()
+	miTxt.font = Font.systemFont(14)
+	miTxt.textOpacity = 0.95
+	miTxt.centerAlignText()
+	widget.addSpacer(10)
+	
+	let utTxt = widget.addText('更新于:'+nowTime())
+	utTxt.textColor = Color.white()
+	utTxt.font = Font.systemFont(14)
+	utTxt.textOpacity = 0.7
+	utTxt.centerAlignText()
+	
+	widget.addSpacer()
+	return widget
+}
+  
+async function loadData() {
+	let req = new Request(apiUrl)
+	req.allowInsecureRequest = true
+	let json = await req.loadJSON()
+	console.log(json)
+	return json
+}
+
+async function loadImage(imgUrl) {
+	console.log(imgUrl)
+	let req = new Request(imgUrl)
+	req.allowInsecureRequest = true
+	let image = await req.loadImage()
+	return image
+}
+
+function toThousands(num) {
+	return (num || 0).toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
+}
+
+function nowTime(){
+	let date = new Date()
+	return date.getHours()+":"+date.getMinutes()
+}
